@@ -21,8 +21,7 @@ workflows:
   all:
     - preprocess
     - create-config
-    - train
-    - evaluate
+    - debug
 
 commands:
   - name: "preprocess"
@@ -45,7 +44,7 @@ commands:
   - name: "create-config"
     help: "Create a config"
     script:
-      - "python -m spacy init config -l ${vars.lang} -p experimental_edit_tree_lemmatizer configs/${vars.treebank}/config.cfg -F"
+      - "python -m spacy init config -l ${vars.lang} -p trainable_lemmatizer configs/${vars.treebank}/config.cfg -F"
 
   - name: "train"
     help: "Train the lemmatizer"
@@ -58,9 +57,13 @@ commands:
     outputs:
       - "training/${vars.treebank}/model-best"
 
-  - name: "evaluate"
-    help: "Evaluate the lemmatization model evaluate on the test corpus."
+  - name: "debug"
+    help: "debug the lemmatizer"
     script:
-      - "python -m spacy evaluate training/${vars.treebank}/model-best corpus/${vars.treebank}/test.spacy"
+      - "python -m spacy debug data configs/${vars.treebank}/config.cfg --paths.train corpus/${vars.treebank}/dev.spacy --paths.dev corpus/${vars.treebank}/dev.spacy"
     deps:
+      - "configs/${vars.treebank}/config.cfg"
+      - "corpus/${vars.treebank}/dev.spacy"
+      - "corpus/${vars.treebank}/test.spacy"
+    outputs:
       - "training/${vars.treebank}/model-best"
