@@ -1,0 +1,34 @@
+create-config:
+  cmd: python -m spacy run create-config
+  script:
+    - python -m spacy init config -l nl -p trainable_lemmatizer configs/UD_Dutch-Alpino/config.cfg
+      -F
+  deps: []
+  outs: []
+  spacy_version: 3.4.1
+  spacy_git_version: 6723d76f2
+preprocess:
+  cmd: python -m spacy run preprocess
+  script:
+    - mkdir -p corpus/UD_Dutch-Alpino
+    - python -m spacy convert assets/UD_Dutch-Alpino/nl_alpino-ud-train.conllu corpus/UD_Dutch-Alpino/
+      --n-sents 10
+    - mv corpus/UD_Dutch-Alpino/nl_alpino-ud-train.spacy corpus/UD_Dutch-Alpino/train.spacy
+    - python -m spacy convert assets/UD_Dutch-Alpino/nl_alpino-ud-dev.conllu corpus/UD_Dutch-Alpino/
+      --n-sents 10
+    - mv corpus/UD_Dutch-Alpino/nl_alpino-ud-dev.spacy corpus/UD_Dutch-Alpino/dev.spacy
+    - python -m spacy convert assets/UD_Dutch-Alpino/nl_alpino-ud-test.conllu corpus/UD_Dutch-Alpino/
+      --n-sents 10
+    - mv corpus/UD_Dutch-Alpino/nl_alpino-ud-test.spacy corpus/UD_Dutch-Alpino/test.spacy
+  deps:
+    - path: assets/UD_Dutch-Alpino/
+      md5: 3754be1f18fc0c939012ab797a3c4425
+  outs:
+    - path: corpus/UD_Dutch-Alpino/train.spacy
+      md5: 9819956aea59c2fad2de3d1da8b01a63
+    - path: corpus/UD_Dutch-Alpino/dev.spacy
+      md5: 718987b6465a2ac413134a79c235bd48
+    - path: corpus/UD_Dutch-Alpino/test.spacy
+      md5: 12ca34924ba6c65d8cc6cac8c98e5ffb
+  spacy_version: 3.4.1
+  spacy_git_version: 6723d76f2
