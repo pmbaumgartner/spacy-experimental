@@ -60,7 +60,7 @@ commands:
   - name: "debug"
     help: "debug the lemmatizer"
     script:
-      - "python -m spacy debug data configs/${vars.treebank}/config.cfg --paths.train corpus/${vars.treebank}/dev.spacy --paths.dev corpus/${vars.treebank}/dev.spacy"
+      - "python -m spacy debug data configs/${vars.treebank}/config.cfg --paths.train corpus/${vars.treebank}/train.spacy --paths.dev corpus/${vars.treebank}/dev.spacy"
     deps:
       - "configs/${vars.treebank}/config.cfg"
       - "corpus/${vars.treebank}/dev.spacy"
